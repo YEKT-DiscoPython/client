@@ -15,6 +15,18 @@ def load_json(path):
 def quit_it():
     pygame.quit()
 
+def start_record():
+    #TODO Start record
+    record_button.function = stop_record
+    record_button.text = "Stop Record"
+    record_button.render_text()
+
+def stop_record():
+    #TODO Stop record
+    record_button.function = start_record
+    record_button.text = "Start Record"
+    record_button.render_text()
+
 RED = (255,0,0)
 BLUE = (0,0,255)
 GREEN = (0,255,0)
@@ -32,6 +44,10 @@ pygame.init()
 
 quit_button = Button((0,0,80,20),RED, quit_it,
                  text="Exit", **BUTTON_STYLE)
+record_button = Button((0,0,80,20),RED, start_record,
+                 text="Start Record", **BUTTON_STYLE)
+record_button.rect.center = (screen.get_rect().centerx,10)
+
 
 samples =  {}
 is_playing = {}
@@ -58,7 +74,9 @@ while True:
         is_playing[key] = False
 
     quit_button.check_event(event)
+    record_button.check_event(event)
     quit_button.update(screen)
+    record_button.update(screen)
     pygame.display.update()
 
 pygame.quit()
