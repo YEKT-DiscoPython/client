@@ -2,6 +2,7 @@ import json
 import pygame
 from button import Button
 from os import getcwd
+from button_style import RED, BLUE, GREEN, BLACK, WHITE, ORANGE, BUTTON_STYLE_1
 
 SAMPLES_PATH = getcwd() + "/"
 
@@ -17,36 +18,31 @@ def quit_it():
 
 def start_record():
     #TODO Start record
-    record_button.function = stop_record
-    record_button.text = "Stop Record"
-    record_button.render_text()
+    buttons["record"].function = stop_record
+    buttons["record"].text = "Stop Record"
+    buttons["record"].render_text()
 
 def stop_record():
     #TODO Stop record
-    record_button.function = start_record
-    record_button.text = "Start Record"
-    record_button.render_text()
+    buttons["record"].function = start_record
+    buttons["record"].text = "Start Record"
+    buttons["record"].render_text()
 
-RED = (255,0,0)
-BLUE = (0,0,255)
-GREEN = (0,255,0)
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-ORANGE = (255,180,0)
-BUTTON_STYLE = {"hover_color" : BLUE,
-                "clicked_color" : GREEN,
-                "clicked_font_color" : BLACK,
-                "hover_font_color" : ORANGE}
+def buttons_update(event, buttons):
+    for button in buttons.values():
+        button.check_event(event)
+        button.update(screen)
 
 pygame.mixer.init(44100,16,2,1024)
 screen = pygame.display.set_mode((400,150))
 pygame.init()
 
-quit_button = Button((0,0,80,20),RED, quit_it,
-                 text="Exit", **BUTTON_STYLE)
-record_button = Button((0,0,80,20),RED, start_record,
-                 text="Start Record", **BUTTON_STYLE)
-record_button.rect.center = (screen.get_rect().centerx,10)
+buttons = {}
+buttons["exit"] = Button((0,0,80,20),RED, quit_it,
+                 text="Exit", **BUTTON_STYLE_1)
+buttons["record"] = Button((0,0,80,20),RED, start_record,
+                 text="Start Record", **BUTTON_STYLE_1)
+buttons["record"].rect.center = (screen.get_rect().centerx,10)
 
 
 samples =  {}
@@ -59,6 +55,9 @@ channels = [pygame.mixer.Channel(i) for i in range(8)]
 while True:
     event = pygame.event.wait()
 
+    if event.type == pygame.QUIT:
+        pygame.quit()
+
     if event.type in (pygame.KEYDOWN, pygame.KEYUP):
         key = pygame.key.name(event.key)
 
@@ -68,15 +67,11 @@ while True:
             is_playing[key] = True
         elif event.key == pygame.K_ESCAPE:
             pygame.quit()
-            raise KeyboardInterrupt
     elif event.type == pygame.KEYUP and key in samples.keys():
         samples[key].fadeout(50)
         is_playing[key] = False
 
-    quit_button.check_event(event)
-    record_button.check_event(event)
-    quit_button.update(screen)
-    record_button.update(screen)
+    buttons_update(event, buttons)
     pygame.display.update()
 
 pygame.quit()
