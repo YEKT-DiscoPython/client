@@ -25,7 +25,8 @@ class Button(object):
                     "hover_font_color" : None,
                     "clicked_font_color" : None,
                     "click_sound" : None,
-                    "hover_sound" : None}
+                    "hover_sound" : None,
+                    "is_hide" : False}
         for kwarg in kwargs:
             if kwarg in settings:
                 settings[kwarg] = kwargs[kwarg]
@@ -45,11 +46,12 @@ class Button(object):
             self.text = self.font.render(self.text,True,self.font_color)
 
     def check_event(self,event):
-        """The button needs to be passed events from your program event loop."""
-        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-            self.on_click(event)
-        elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
-            self.on_release(event)
+        if self.is_hide == False:
+            """The button needs to be passed events from your program event loop."""
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                self.on_click(event)
+            elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
+                self.on_release(event)
 
     def on_click(self,event):
         if self.rect.collidepoint(event.pos):
@@ -72,20 +74,25 @@ class Button(object):
             self.hovered = False
 
     def update(self,surface):
-        """Update needs to be called every frame in the main loop."""
-        color = self.color
-        text = self.text
-        self.check_hover()
-        if self.clicked and self.clicked_color:
-            color = self.clicked_color
-            if self.clicked_font_color:
-                text = self.clicked_text
-        elif self.hovered and self.hover_color:
-            color = self.hover_color
-            if self.hover_font_color:
-                text = self.hover_text
-        surface.fill(pg.Color("black"),self.rect)
-        surface.fill(color,self.rect.inflate(-4,-4))
-        if self.text:
-            text_rect = text.get_rect(center=self.rect.center)
-            surface.blit(text,text_rect)
+        if self.is_hide == False:
+            """Update needs to be called every frame in the main loop."""
+            color = self.color
+            text = self.text
+            self.check_hover()
+            if self.clicked and self.clicked_color:
+                color = self.clicked_color
+                if self.clicked_font_color:
+                    text = self.clicked_text
+            elif self.hovered and self.hover_color:
+                color = self.hover_color
+                if self.hover_font_color:
+                    text = self.hover_text
+            surface.fill(pg.Color("black"),self.rect)
+            surface.fill(color,self.rect.inflate(-4,-4))
+            if self.text:
+                text_rect = text.get_rect(center=self.rect.center)
+                surface.blit(text,text_rect)
+    def hide(self):
+        self.is_hide = True
+    def show(self):
+        self.is_hide = False
