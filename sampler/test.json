@@ -1,15 +1,15 @@
 {
-   "a": "Electric Piano/1 Har009.wav",
-   "s": "Electric Piano/1 Har011.wav",
-   "d": "Electric Piano/1 Har013.wav",
-   "f": "Electric Piano/1 Har014.wav",
-   "g": "Electric Piano/1 Har016.wav",
-   "h": "Electric Piano/1 Har018.wav",
-   "j": "Electric Piano/1 Har020.wav",
-   "k": "Electric Piano/1 Har021.wav",
-   "w": "Electric Piano/Har010.wav",
-   "e": "Electric Piano/Har012.wav",
-   "r": "Electric Piano/Har015.wav",
-   "t": "Electric Piano/Har017.wav",
-   "y": "Electric Piano/Har019.wav"
+   "a": "1000",
+   "s": "1001",
+   "d": "1002",
+   "f": "1003",
+   "g": "1004",
+   "h": "1005",
+   "j": "1006",
+   "k": "1007",
+   "w": "1008",
+   "e": "1009",
+   "r": "1010",
+   "t": "1011",
+   "y": "1012"
 }
